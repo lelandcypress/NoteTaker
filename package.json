@@ -1,0 +1,30 @@
+{
+  "name": "NoteTaker",
+  "version": "1.0.0",
+  "description": "1. [Description](#Description)\r 2. [Installation](#Instructions)\r 3. [Usage](#Usage)\r 4. [License](#License)\r 5. [Contribution](#Contribution)\r 6. [Tests](#Tests)\r 7. [Questions](#Questions)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node server.js",
+    "watch": "nodemon server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lelandcypress/NoteTaker.git"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lelandcypress/NoteTaker/issues"
+  },
+  "homepage": "https://github.com/lelandcypress/NoteTaker#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jest": "^27.0.6"
+  }
+}
