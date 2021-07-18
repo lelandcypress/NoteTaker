@@ -1,12 +1,14 @@
+const bodyParser = require("body-parser");
 const { text } = require("body-parser");
 const express = require("express");
-const http = require("http");
 const path = require("path");
 const app = express();
 const PORT = 3000;
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(express.json());
 
 app.get("/", (req, res) =>
@@ -19,10 +21,17 @@ app.get("/notes", (req, res) =>
 
 app.get("/api/notes", (req, res) => res.json(noteList));
 
+app.post("api/notes", (req, res) => {
+  const newNote = req.body;
+  noteList.push(newNote);
+  res.json(newNote);
+  console.log("You tried to save something");
+});
+
 const noteList = [
   {
-    Notetitle: "Howdy",
-    noteText: "Planet",
+    title: "Hello World",
+    text: "Hello",
   },
 ];
 
