@@ -19,18 +19,25 @@ app.get("/notes", (req, res) =>
   res.sendFile(path.join(__dirname, "public/notes.html"))
 );
 
+app.get("/notes/:title", (req, res) => {
+  const selected = req.params.notes;
+  console.log(selected);
+});
+
+//app.get("/api/notes", (req, res) => res.json(noteList));
+
 app.get("/api/notes", (req, res) => res.json(noteList));
 
-app.post("api/notes", (req, res) => {
+app.post("/api/notes", (req, res) => {
   const newNote = req.body;
   noteList.push(newNote);
   res.json(newNote);
-  console.log("You tried to save something");
+  console.log(noteList);
 });
 
 const noteList = [
   {
-    title: "Hello World",
+    title: "Hello",
     text: "Hello",
   },
 ];
