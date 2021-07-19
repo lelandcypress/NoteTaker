@@ -4,6 +4,7 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const PORT = 3000;
+const fs = require("fs");
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
@@ -26,20 +27,29 @@ app.get("/notes/:title", (req, res) => {
 
 //app.get("/api/notes", (req, res) => res.json(noteList));
 
-app.get("/api/notes", (req, res) => res.json(noteList));
+app.get("/api/notes", (req, res) =>
+  res.sendFile(path.join(__dirname, "db/db.json"))
+);
 
 app.post("/api/notes", (req, res) => {
+  const data = fs.readFileSync("db/db.json");
+  const notesList = JSON.parse(data);
   const newNote = req.body;
-  noteList.push(newNote);
-  res.json(newNote);
-  console.log(noteList);
+  notesList.push(newNote);
+  const updatedNotes = JSON.stringify(notesList);
+  fs.writeFile("db/db.json", updatedNotes, (err) => {
+    if (err) throw err;
+  });
 });
 
-const noteList = [
-  {
-    title: "Hello",
-    text: "Hello",
-  },
-];
+/*app.delete("/api/notes", (req, res) => {
+  const deletedNote = req.params.title;
+
+  for (let i = 0; i < noteList.length; i++) {
+    if (deletedNote === noteList[i].title) {
+      noteList.splice(deletedNote, 1);
+    }
+  }
+});*/
 
 app.listen(PORT, () => console.log(`Server Listening on PORT ${PORT}`));
