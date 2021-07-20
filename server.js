@@ -1,3 +1,4 @@
+const uniqid = require("uniqid");
 const bodyParser = require("body-parser");
 const { text } = require("body-parser");
 const fs = require("fs");
@@ -42,13 +43,16 @@ app.post("/api/notes", (req, res) => {
   const newNote = req.body;
   noteList.push(newNote);
   const updatedNotes = JSON.stringify(noteList);
-  fs.writeFile("db/db.json", updatedNotes, (err) => {
+  fs.writeFileSync("db/db.json", updatedNotes, (err) => {
     if (err) throw err;
   });
   res.end("post successful");
 });
 
 app.delete("/api/notes/:noteList", (req, res) => {
+  const deletedNote = req.params.noteList;
+  console.log(deletedNote.title);
+  res.end("post successful");
   /*for (let i = 0; i < noteList.length; i++) {
     if (deletedNote === noteList[i].title) {
       noteList.splice(deletedNote, 1);

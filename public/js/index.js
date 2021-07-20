@@ -49,6 +49,7 @@ const deleteNote = (id) =>
     headers: {
       "Content-Type": "application/json",
     },
+    body: JSON.stringify(id),
   });
 
 const renderActiveNote = () => {
@@ -72,10 +73,17 @@ const handleNoteSave = () => {
     title: noteTitle.value,
     text: noteText.value,
   };
-  saveNote(newNote).then(() => {
-    getAndRenderNotes();
-    renderActiveNote();
-  });
+  console.log(newNote);
+  saveNote(newNote)
+    .then(() => {
+      location.reload();
+      console.log("First Promise");
+      getAndRenderNotes();
+    })
+    .then(() => {
+      console.log("Second Promise");
+      renderActiveNote();
+    });
 };
 
 // Delete the clicked note
@@ -100,8 +108,8 @@ const handleNoteDelete = (e) => {
 
 // Sets the activeNote and displays it
 const handleNoteView = (e) => {
-  e.preventDefault();
-  activeNote = JSON.parse(e.target.parentElement.getAttribute("data-note"));
+  const selectedNote = e.target;
+  activeNote = JSON.parse(selectedNote.parentElement.getAttribute("data-note"));
   renderActiveNote();
 };
 
