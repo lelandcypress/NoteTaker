@@ -27,7 +27,7 @@ app.get("/api/notes/:noteList", (req, res) => {
   console.log(selected);
   console.log(noteList[0].title);
   for (let i = 0; i < noteList.length; i++) {
-    if (selected === noteList[i].title) {
+    if (selected == noteList[i].title) {
       return res.json(noteList[i]);
     }
   }
@@ -38,19 +38,17 @@ app.get("/api/notes", (req, res) => res.json(noteList));
 
 app.post("/api/notes", (req, res) => {
   const data = fs.readFileSync("db/db.json");
-  const notesList = JSON.parse(data);
+  const noteList = JSON.parse(data);
   const newNote = req.body;
-  notesList.push(newNote);
-  const updatedNotes = JSON.stringify(notesList);
+  noteList.push(newNote);
+  const updatedNotes = JSON.stringify(noteList);
   fs.writeFile("db/db.json", updatedNotes, (err) => {
     if (err) throw err;
   });
-  console.log(noteList);
+  res.end("post successful");
 });
 
 app.delete("/api/notes/:noteList", (req, res) => {
-  const deletedNote = req.params.noteList;
-  console.log(deletedNote);
   /*for (let i = 0; i < noteList.length; i++) {
     if (deletedNote === noteList[i].title) {
       noteList.splice(deletedNote, 1);
