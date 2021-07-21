@@ -4,7 +4,7 @@ const { text } = require("body-parser");
 const fs = require("fs");
 const express = require("express");
 const path = require("path");
-const noteList = require("./db/db.json");
+
 
 const app = express();
 const PORT = 3000;
@@ -35,18 +35,21 @@ app.get("/api/notes/:noteList", (req, res) => {
   return res.json(false);
 });
 
-app.get("/api/notes", (req, res) => res.json(noteList));
+app.get("/api/notes", (req, res) => {
+  const data = fs.readFileSync(path.join(__dirname, "db/db.json"));
+  res.json(JSON.parse(data));
+});
 
 app.post("/api/notes", (req, res) => {
-  const data = fs.readFileSync("db/db.json");
+  const data = fs.readFileSync(path.join(__dirname, "db/db.json"));
   const noteList = JSON.parse(data);
   const newNote = req.body;
   noteList.push(newNote);
   const updatedNotes = JSON.stringify(noteList);
-  fs.writeFileSync("db/db.json", updatedNotes, (err) => {
+  fs.writeFile(path.join(__dirname, "db/db.json"), updatedNotes, (err) => {
     if (err) throw err;
+    res.end("post successful");
   });
-  res.end("post successful");
 });
 
 app.delete("/api/notes/:noteList", (req, res) => {

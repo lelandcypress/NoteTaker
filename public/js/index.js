@@ -76,12 +76,9 @@ const handleNoteSave = () => {
   console.log(newNote);
   saveNote(newNote)
     .then(() => {
-      location.reload();
-      console.log("First Promise");
       getAndRenderNotes();
     })
     .then(() => {
-      console.log("Second Promise");
       renderActiveNote();
     });
 };
