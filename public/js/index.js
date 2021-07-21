@@ -67,13 +67,12 @@ const renderActiveNote = () => {
     noteText.value = "";
   }
 };
-//THIS IS THE PROBLEM!!!!
+
 const handleNoteSave = () => {
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
   };
-  console.log(newNote);
   saveNote(newNote)
     .then(() => {
       getAndRenderNotes();
