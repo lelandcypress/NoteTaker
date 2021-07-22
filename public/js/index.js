@@ -5,7 +5,6 @@ let newNoteBtn;
 let noteList;
 
 if (window.location.pathname === "/notes") {
-  //
   noteTitle = document.querySelector(".note-title");
   noteText = document.querySelector(".note-textarea");
   saveNoteBtn = document.querySelector(".save-note");
@@ -25,7 +24,7 @@ const hide = (elem) => {
 
 // activeNote is used to keep track of the note in the textarea
 let activeNote = {};
-//MAY NEED TO MODIFY//
+
 const getNotes = () =>
   fetch("/api/notes", {
     method: "GET",
@@ -33,7 +32,7 @@ const getNotes = () =>
       "Content-Type": "application/json",
     },
   });
-//MAY NEED TO MODIFY//
+
 const saveNote = (note) =>
   fetch("/api/notes", {
     method: "POST",
@@ -42,14 +41,13 @@ const saveNote = (note) =>
     },
     body: JSON.stringify(note),
   });
-//MAY NEED TO MODIFY//
+
 const deleteNote = (id) =>
   fetch(`/api/notes/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(id),
   });
 
 const renderActiveNote = () => {
@@ -73,13 +71,10 @@ const handleNoteSave = () => {
     title: noteTitle.value,
     text: noteText.value,
   };
-  saveNote(newNote)
-    .then(() => {
-      getAndRenderNotes();
-    })
-    .then(() => {
-      renderActiveNote();
-    });
+  saveNote(newNote).then(() => {
+    getAndRenderNotes();
+    renderActiveNote();
+  });
 };
 
 // Delete the clicked note
@@ -88,9 +83,7 @@ const handleNoteDelete = (e) => {
   e.stopPropagation();
 
   const note = e.target;
-
   const noteId = JSON.parse(note.parentElement.getAttribute("data-note")).id;
-  //returns undefined
   console.log(noteId);
   if (activeNote.id === noteId) {
     activeNote = {};
@@ -104,8 +97,8 @@ const handleNoteDelete = (e) => {
 
 // Sets the activeNote and displays it
 const handleNoteView = (e) => {
-  const selectedNote = e.target;
-  activeNote = JSON.parse(selectedNote.parentElement.getAttribute("data-note"));
+  e.preventDefault();
+  activeNote = JSON.parse(e.target.parentElement.getAttribute("data-note"));
   renderActiveNote();
 };
 

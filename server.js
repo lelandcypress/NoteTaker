@@ -1,4 +1,4 @@
-const { nanoid } = require("nanoid");
+const uniqid = require("uniqid");
 const bodyParser = require("body-parser");
 const { text } = require("body-parser");
 const fs = require("fs");
@@ -42,7 +42,7 @@ app.post("/api/notes", (req, res) => {
   const data = fs.readFileSync(path.join(__dirname, "db/db.json"));
   const noteList = JSON.parse(data);
   const newNote = req.body;
-  newNote.id = nanoid();
+  newNote.id = uniqid();
   console.log(newNote);
   noteList.push(newNote);
   const updatedNotes = JSON.stringify(noteList);
@@ -55,12 +55,19 @@ app.post("/api/notes", (req, res) => {
 app.delete("/api/notes/:id", (req, res) => {
   const deletedNote = req.params.id;
   console.log(deletedNote);
-  res.end("post successful");
-  /*for (let i = 0; i < noteList.length; i++) {
-    if (deletedNote === noteList[i].title) {
+  const data = fs.readFileSync(path.join(__dirname, "db/db.json"));
+  const noteList = JSON.parse(data);
+
+  for (let i = 0; i < noteList.length; i++) {
+    if (deletedNote === noteList[i].id) {
       noteList.splice(deletedNote, 1);
     }
-  }*/
+  }
+  const updatedNotes = JSON.stringify(noteList);
+  fs.writeFile(path.join(__dirname, "db/db.json"), updatedNotes, (err) => {
+    if (err) throw err;
+    res.end("post successful");
+  });
 });
 
 app.listen(PORT, () => console.log(`Server Listening on PORT ${PORT}`));
