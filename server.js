@@ -20,14 +20,14 @@ app.get("/notes", (req, res) =>
   res.sendFile(path.join(__dirname, "public/notes.html"))
 );
 
-app.get("/api/notes/:title", (req, res) => {
-  const selected = req.params.title;
-  const noteFile = path.join(__dirname, "db/db.json");
-  const noteList = json(JSON.parse(noteFile));
-  //console.log(req.params.title);
-  console.log(noteList);
+app.get("/api/notes/:id", (req, res) => {
+  const selected = req.params.id;
+  console.log(selected);
+  const data = fs.readFileSync(path.join(__dirname, "db/db.json"));
+  const noteList = JSON.parse(data);
+  console.log(noteList[0]);
   for (let i = 0; i < noteList.length; i++) {
-    if (selected == noteList[i].title) {
+    if (selected == noteList[i].id) {
       return res.json(noteList[i]);
     } else return res.json(false);
   }
@@ -52,9 +52,9 @@ app.post("/api/notes", (req, res) => {
   });
 });
 
-app.delete("/api/notes/:noteList", (req, res) => {
-  const deletedNote = req.params.noteList;
-  console.log(id);
+app.delete("/api/notes/:id", (req, res) => {
+  const deletedNote = req.params.id;
+  console.log(deletedNote);
   res.end("post successful");
   /*for (let i = 0; i < noteList.length; i++) {
     if (deletedNote === noteList[i].title) {
